@@ -59,16 +59,31 @@ export const SummaryTable: FC<SummaryTableProps> = ({ shipments }) => {
     return (
         <Box sx={{ mt: 6 }}>
             <Divider sx={{ mb: 3 }} />
-            <Typography variant='h5' sx={{ fontWeight: 700, mb: 2 }}>
+            <Typography
+                variant='h5'
+                sx={{ fontWeight: 700, mb: 2 }}
+            >
                 Summary
             </Typography>
-            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 2 }}>
-                <Table size='small' stickyHeader>
+            <TableContainer
+                component={Paper}
+                elevation={2}
+                sx={{ borderRadius: 2 }}
+            >
+                <Table
+                    size='small'
+                    stickyHeader
+                >
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{ fontWeight: 700 }}>Dewar</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Puck</TableCell>
-                            <TableCell sx={{ fontWeight: 700 }} align='center'>Pos.</TableCell>
+                            <TableCell
+                                sx={{ fontWeight: 700 }}
+                                align='center'
+                            >
+                                Pos.
+                            </TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Sample</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Loop type</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Holder length</TableCell>
@@ -81,12 +96,11 @@ export const SummaryTable: FC<SummaryTableProps> = ({ shipments }) => {
                             const prevRow = rows[idx - 1]
                             const dewarChanged = !prevRow || prevRow.dewar !== row.dewar
                             const puckChanged = !prevRow || prevRow.puck !== row.puck || dewarChanged
-                            const dewarRowSpan = dewarChanged
-                                ? rows.filter((r) => r.dewar === row.dewar).length
-                                : 0
-                            const puckRowSpan = puckChanged
-                                ? rows.filter((r) => r.dewar === row.dewar && r.puck === row.puck).length
-                                : 0
+                            const dewarRowSpan = dewarChanged ? rows.filter((r) => r.dewar === row.dewar).length : 0
+                            const puckRowSpan =
+                                puckChanged ?
+                                    rows.filter((r) => r.dewar === row.dewar && r.puck === row.puck).length
+                                :   0
 
                             return (
                                 <TableRow

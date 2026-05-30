@@ -41,7 +41,11 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) 
         >
             <CardHeader
                 title={
-                    <Typography variant='h6' sx={{ fontWeight: 700 }} noWrap>
+                    <Typography
+                        variant='h6'
+                        sx={{ fontWeight: 700 }}
+                        noWrap
+                    >
                         {puck.name ?? puck.key}
                     </Typography>
                 }
@@ -81,14 +85,23 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) 
                     }}
                 >
                     {Array.from({ length: MAX_PINS }, (_, i) => i + 1).map((pos) => (
-                        <PinButton key={pos} position={pos} size={size} pin={pinByPosition[pos]} />
+                        <PinButton
+                            key={pos}
+                            position={pos}
+                            size={size}
+                            pin={pinByPosition[pos]}
+                        />
                     ))}
                 </Box>
 
                 {puck.pins.length > 0 && (
                     <Box>
                         <Divider sx={{ mb: 1 }} />
-                        <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 600 }}>
+                        <Typography
+                            variant='caption'
+                            color='text.secondary'
+                            sx={{ fontWeight: 600 }}
+                        >
                             Samples
                         </Typography>
                         <Box sx={{ mt: 0.5 }}>
@@ -109,7 +122,10 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) 
                                         size='small'
                                         sx={{ height: 18, fontSize: '0.65rem', minWidth: 24 }}
                                     />
-                                    <Typography variant='caption' noWrap>
+                                    <Typography
+                                        variant='caption'
+                                        noWrap
+                                    >
                                         {pin.sample?.name ?? <em>empty</em>}
                                     </Typography>
                                 </Box>

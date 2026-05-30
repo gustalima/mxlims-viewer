@@ -56,10 +56,17 @@ export const FileUpload: FC<FileUploadProps> = ({ onFile, validationResult }) =>
                     onChange={handleChange}
                 />
                 <UploadFileIcon sx={{ fontSize: 48, color: 'primary.main', mb: 1 }} />
-                <Typography variant='h6' gutterBottom>
+                <Typography
+                    variant='h6'
+                    gutterBottom
+                >
                     Drop an MXLIMS JSON file here
                 </Typography>
-                <Typography variant='body2' color='text.secondary' gutterBottom>
+                <Typography
+                    variant='body2'
+                    color='text.secondary'
+                    gutterBottom
+                >
                     or click to browse
                 </Typography>
                 <Button
@@ -76,12 +83,22 @@ export const FileUpload: FC<FileUploadProps> = ({ onFile, validationResult }) =>
             </Paper>
 
             {validationResult && !validationResult.valid && (
-                <Alert severity='error' sx={{ mt: 2 }}>
-                    <Typography variant='subtitle2' sx={{ fontWeight: 700 }} gutterBottom>
+                <Alert
+                    severity='error'
+                    sx={{ mt: 2 }}
+                >
+                    <Typography
+                        variant='subtitle2'
+                        sx={{ fontWeight: 700 }}
+                        gutterBottom
+                    >
                         Validation failed — {validationResult.errors.length} error
                         {validationResult.errors.length > 1 ? 's' : ''}
                     </Typography>
-                    <Box component='ul' sx={{ m: 0, pl: 2 }}>
+                    <Box
+                        component='ul'
+                        sx={{ m: 0, pl: 2 }}
+                    >
                         {validationResult.errors.slice(0, 20).map((err, i) => (
                             <li key={i}>
                                 <Typography variant='caption'>
@@ -91,7 +108,10 @@ export const FileUpload: FC<FileUploadProps> = ({ onFile, validationResult }) =>
                         ))}
                         {validationResult.errors.length > 20 && (
                             <li>
-                                <Typography variant='caption' color='text.secondary'>
+                                <Typography
+                                    variant='caption'
+                                    color='text.secondary'
+                                >
                                     … and {validationResult.errors.length - 20} more
                                 </Typography>
                             </li>
@@ -101,7 +121,10 @@ export const FileUpload: FC<FileUploadProps> = ({ onFile, validationResult }) =>
             )}
 
             {validationResult?.valid && (
-                <Alert severity='success' sx={{ mt: 2 }}>
+                <Alert
+                    severity='success'
+                    sx={{ mt: 2 }}
+                >
                     File validated successfully.
                 </Alert>
             )}

@@ -10,10 +10,7 @@ interface ShipmentPanelProps {
 
 export const ShipmentPanel: FC<ShipmentPanelProps> = ({ shipment }) => {
     const totalPucks = shipment.dewars.reduce((acc, d) => acc + d.pucks.length, 0)
-    const totalPins = shipment.dewars.reduce(
-        (acc, d) => acc + d.pucks.reduce((a2, p) => a2 + p.pins.length, 0),
-        0,
-    )
+    const totalPins = shipment.dewars.reduce((acc, d) => acc + d.pucks.reduce((a2, p) => a2 + p.pins.length, 0), 0)
     const outbound = shipment.labContactOutbound
     const ret = shipment.labContactReturn
     const identifiers = shipment.identifiers ? Object.entries(shipment.identifiers) : []
@@ -21,12 +18,22 @@ export const ShipmentPanel: FC<ShipmentPanelProps> = ({ shipment }) => {
 
     return (
         <Box sx={{ mb: 4 }}>
-            <Stack direction='row' spacing={2} sx={{ alignItems: 'baseline', mb: 0.5, flexWrap: 'wrap' }}>
-                <Typography variant='h4' sx={{ fontWeight: 700 }}>
+            <Stack
+                direction='row'
+                spacing={2}
+                sx={{ alignItems: 'baseline', mb: 0.5, flexWrap: 'wrap' }}
+            >
+                <Typography
+                    variant='h4'
+                    sx={{ fontWeight: 700 }}
+                >
                     {shipment.proposalCode}
                 </Typography>
                 {shipment.sessionNumber != null && (
-                    <Typography variant='h6' color='text.secondary'>
+                    <Typography
+                        variant='h6'
+                        color='text.secondary'
+                    >
                         Session {shipment.sessionNumber}
                     </Typography>
                 )}
@@ -43,7 +50,11 @@ export const ShipmentPanel: FC<ShipmentPanelProps> = ({ shipment }) => {
             )}
 
             {(identifiers.length > 0 || urls.length > 0) && (
-                <Stack direction='row' spacing={3} sx={{ mb: 1.5, flexWrap: 'wrap' }}>
+                <Stack
+                    direction='row'
+                    spacing={3}
+                    sx={{ mb: 1.5, flexWrap: 'wrap' }}
+                >
                     {identifiers.map(([system, id]) => {
                         const matchingUrl = urls.find(([s]) => s === system)
                         return (
@@ -59,15 +70,18 @@ export const ShipmentPanel: FC<ShipmentPanelProps> = ({ shipment }) => {
                                 >
                                     {system}
                                 </Typography>
-                                {matchingUrl ? (
+                                {matchingUrl ?
                                     <Typography variant='body2'>
-                                        <Link href={matchingUrl[1]} target='_blank' rel='noopener noreferrer' underline='hover'>
+                                        <Link
+                                            href={matchingUrl[1]}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            underline='hover'
+                                        >
                                             {id}
                                         </Link>
                                     </Typography>
-                                ) : (
-                                    <Typography variant='body2'>{id}</Typography>
-                                )}
+                                :   <Typography variant='body2'>{id}</Typography>}
                             </Box>
                         )
                     })}
@@ -87,7 +101,12 @@ export const ShipmentPanel: FC<ShipmentPanelProps> = ({ shipment }) => {
                                     {system}
                                 </Typography>
                                 <Typography variant='body2'>
-                                    <Link href={url} target='_blank' rel='noopener noreferrer' underline='hover'>
+                                    <Link
+                                        href={url}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        underline='hover'
+                                    >
                                         {url}
                                     </Link>
                                 </Typography>
@@ -96,9 +115,23 @@ export const ShipmentPanel: FC<ShipmentPanelProps> = ({ shipment }) => {
                 </Stack>
             )}
 
-            <Stack direction='row' spacing={2} sx={{ alignItems: 'flex-start', mb: 2, flexWrap: 'wrap' }}>
-                {outbound && <ContactInfo label='Outbound contact' person={outbound} />}
-                {ret && ret !== outbound && <ContactInfo label='Return contact' person={ret} />}
+            <Stack
+                direction='row'
+                spacing={2}
+                sx={{ alignItems: 'flex-start', mb: 2, flexWrap: 'wrap' }}
+            >
+                {outbound && (
+                    <ContactInfo
+                        label='Outbound contact'
+                        person={outbound}
+                    />
+                )}
+                {ret && ret !== outbound && (
+                    <ContactInfo
+                        label='Return contact'
+                        person={ret}
+                    />
+                )}
                 <Stack
                     direction='row'
                     spacing={1}
@@ -125,13 +158,22 @@ export const ShipmentPanel: FC<ShipmentPanelProps> = ({ shipment }) => {
 
             <Divider sx={{ mb: 2 }} />
 
-            {shipment.dewars.length === 0 ? (
-                <Typography variant='body2' color='text.secondary' sx={{ py: 2, textAlign: 'center' }}>
+            {shipment.dewars.length === 0 ?
+                <Typography
+                    variant='body2'
+                    color='text.secondary'
+                    sx={{ py: 2, textAlign: 'center' }}
+                >
                     No dewars in this shipment.
                 </Typography>
-            ) : (
-                shipment.dewars.map((dewar) => <DewarPanel key={dewar.key} dewar={dewar} defaultExpanded />)
-            )}
+            :   shipment.dewars.map((dewar) => (
+                    <DewarPanel
+                        key={dewar.key}
+                        dewar={dewar}
+                        defaultExpanded
+                    />
+                ))
+            }
         </Box>
     )
 }
