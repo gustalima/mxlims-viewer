@@ -159,46 +159,46 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size: sizeProp }) => {
                 </Box>
 
                 <Box>
-                        <Divider sx={{ mb: 1 }} />
-                        <Typography
-                            variant='caption'
-                            color='text.secondary'
-                            sx={{ fontWeight: 600 }}
-                        >
-                            Samples
-                        </Typography>
-                        <Box sx={{ mt: 0.5 }}>
-                            {Array.from({ length: MAX_PINS }, (_, i) => i + 1).map((pos) => {
-                                const pin = pinByPosition[pos]
-                                return (
-                                    <Box
-                                        key={pos}
-                                        sx={{
-                                            display: 'flex',
-                                            gap: 1,
-                                            alignItems: 'baseline',
-                                            borderRadius: 1,
-                                            px: 0.5,
-                                            py: 0.25,
-                                            opacity: pin ? 1 : 0.35,
-                                        }}
+                    <Divider sx={{ mb: 1 }} />
+                    <Typography
+                        variant='caption'
+                        color='text.secondary'
+                        sx={{ fontWeight: 600 }}
+                    >
+                        Samples
+                    </Typography>
+                    <Box sx={{ mt: 0.5 }}>
+                        {Array.from({ length: MAX_PINS }, (_, i) => i + 1).map((pos) => {
+                            const pin = pinByPosition[pos]
+                            return (
+                                <Box
+                                    key={pos}
+                                    sx={{
+                                        display: 'flex',
+                                        gap: 1,
+                                        alignItems: 'baseline',
+                                        borderRadius: 1,
+                                        px: 0.5,
+                                        py: 0.25,
+                                        opacity: pin ? 1 : 0.35,
+                                    }}
+                                >
+                                    <Chip
+                                        label={pos}
+                                        size='small'
+                                        sx={{ height: 18, fontSize: '0.65rem', width: 28, flexShrink: 0 }}
+                                    />
+                                    <Typography
+                                        variant='caption'
+                                        noWrap
                                     >
-                                        <Chip
-                                            label={pos}
-                                            size='small'
-                                            sx={{ height: 18, fontSize: '0.65rem', width: 28, flexShrink: 0 }}
-                                        />
-                                        <Typography
-                                            variant='caption'
-                                            noWrap
-                                        >
-                                            {pin?.sample?.name ?? <em>empty</em>}
-                                        </Typography>
-                                    </Box>
-                                )
-                            })}
-                        </Box>
+                                        {pin?.sample?.name ?? <em>empty</em>}
+                                    </Typography>
+                                </Box>
+                            )
+                        })}
                     </Box>
+                </Box>
             </CardContent>
         </Card>
     )

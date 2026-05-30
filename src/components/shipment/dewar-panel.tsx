@@ -52,7 +52,13 @@ export const DewarPanel: FC<DewarPanelProps> = ({ dewar, defaultExpanded }) => {
         <Accordion
             defaultExpanded={defaultExpanded}
             elevation={0}
-            sx={{ borderRadius: '8px !important', mb: 1, '&:before': { display: 'none' }, border: '1px solid', borderColor: 'divider' }}
+            sx={{
+                borderRadius: '8px !important',
+                mb: 1,
+                '&:before': { display: 'none' },
+                border: '1px solid',
+                borderColor: 'divider',
+            }}
         >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
