@@ -10,7 +10,7 @@ import type {
     ResolvedPin,
     ResolvedPuck,
     ResolvedShipment,
-} from '../types/mxlims'
+} from '@/types/mxlims'
 
 function resolveRef<T>(ref: string, doc: MxlimsDocument): T | undefined {
     // ref format: "#/Type/Key"

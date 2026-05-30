@@ -7,7 +7,7 @@
  * LogisticalSampleData, ShipmentData, DewarData, PuckData, PinData).
  */
 
-import type { ValidationError, ValidationResult } from '../types/mxlims'
+import type { ValidationError, ValidationResult } from '@/types/mxlims'
 
 // ── UUID regex ────────────────────────────────────────────────────────────────
 

@@ -1,8 +1,8 @@
-import { Box, Card, CardContent, CardHeader, Chip, Divider, Grid, Typography } from '@mui/material'
+import { PinButton } from '@/components/pin-button/pin-button'
+import type { ResolvedPin, ResolvedPuck } from '@/types/mxlims'
+import { Box, Card, CardContent, CardHeader, Chip, Divider, Typography } from '@mui/material'
 import { green, grey } from '@mui/material/colors'
-import React from 'react'
-import type { ResolvedPin, ResolvedPuck } from '../types/mxlims'
-import { PinButton } from './PinButton'
+import type { FC } from 'react'
 
 const MAX_PINS = 16
 
@@ -15,7 +15,7 @@ interface PuckCardProps {
     size?: number
 }
 
-export const PuckCard: React.FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) => {
+export const PuckCard: FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) => {
     const pinByPosition: Record<number, ResolvedPin> = {}
     for (const pin of puck.pins) {
         if (pin.positionInPuck != null) {
@@ -41,11 +41,7 @@ export const PuckCard: React.FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SI
         >
             <CardHeader
                 title={
-                    <Typography
-                        variant='h6'
-                        sx={{ fontWeight: 700 }}
-                        noWrap
-                    >
+                    <Typography variant='h6' sx={{ fontWeight: 700 }} noWrap>
                         {puck.name ?? puck.key}
                     </Typography>
                 }
@@ -65,7 +61,6 @@ export const PuckCard: React.FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SI
                 }
                 sx={{ pb: 0 }}
             />
-
             <CardContent
                 sx={{
                     display: 'flex',
@@ -75,42 +70,25 @@ export const PuckCard: React.FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SI
                     '&:last-child': { pb: 2 },
                 }}
             >
-                {/* Unipuck diagram */}
-                <Box sx={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    <Box
-                        sx={{
-                            position: 'relative',
-                            width: `${size}rem`,
-                            height: `${size}rem`,
-                            backgroundImage: 'url(/unipuck.webp)',
-                            backgroundSize: 'contain',
-                            backgroundRepeat: 'no-repeat',
-                        }}
-                    >
-                        {Array.from({ length: MAX_PINS }, (_, i) => i + 1).map((pos) => (
-                            <PinButton
-                                key={pos}
-                                position={pos}
-                                size={size}
-                                pin={pinByPosition[pos]}
-                            />
-                        ))}
-                    </Box>
+                <Box
+                    sx={{
+                        position: 'relative',
+                        width: `${size}rem`,
+                        height: `${size}rem`,
+                        backgroundImage: 'url(/unipuck.webp)',
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                    }}
+                >
+                    {Array.from({ length: MAX_PINS }, (_, i) => i + 1).map((pos) => (
+                        <PinButton key={pos} position={pos} size={size} pin={pinByPosition[pos]} />
+                    ))}
                 </Box>
-                <Divider
-                    orientation='vertical'
-                    flexItem
-                    sx={{ display: 'none' }}
-                />
-                {/* Pin list */}
+
                 {puck.pins.length > 0 && (
                     <Box>
                         <Divider sx={{ mb: 1 }} />
-                        <Typography
-                            variant='caption'
-                            color='text.secondary'
-                            sx={{ fontWeight: 600 }}
-                        >
+                        <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 600 }}>
                             Samples
                         </Typography>
                         <Box sx={{ mt: 0.5 }}>
@@ -131,10 +109,7 @@ export const PuckCard: React.FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SI
                                         size='small'
                                         sx={{ height: 18, fontSize: '0.65rem', minWidth: 24 }}
                                     />
-                                    <Typography
-                                        variant='caption'
-                                        noWrap
-                                    >
+                                    <Typography variant='caption' noWrap>
                                         {pin.sample?.name ?? <em>empty</em>}
                                     </Typography>
                                 </Box>
@@ -146,28 +121,3 @@ export const PuckCard: React.FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SI
         </Card>
     )
 }
-
-interface PuckGridProps {
-    pucks: ResolvedPuck[]
-    /** Puck container size in rem passed down to each PuckCard */
-    size?: number
-}
-
-export const PuckGrid: React.FC<PuckGridProps> = ({ pucks, size }) => (
-    <Grid
-        container
-        spacing={2}
-    >
-        {pucks.map((puck) => (
-            <Grid
-                key={puck.key}
-                size='auto'
-            >
-                <PuckCard
-                    puck={puck}
-                    size={size}
-                />
-            </Grid>
-        ))}
-    </Grid>
-)
