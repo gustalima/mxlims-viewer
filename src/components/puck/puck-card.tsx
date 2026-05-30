@@ -4,6 +4,57 @@ import { Box, Card, CardContent, CardHeader, Chip, Divider, Typography } from '@
 import { green, grey } from '@mui/material/colors'
 import { useEffect, useRef, useState, type FC } from 'react'
 
+// ── Empty puck slot placeholder ───────────────────────────────────────────────
+
+export const PuckPlaceholder: FC<{ slot: number }> = ({ slot }) => (
+    <Card
+        elevation={0}
+        sx={{
+            borderRadius: 2,
+            border: '1px dashed',
+            borderColor: 'divider',
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            opacity: 0.35,
+        }}
+    >
+        <CardHeader
+            title={
+                <Typography
+                    variant='h6'
+                    sx={{ fontWeight: 700, color: 'text.disabled' }}
+                    noWrap
+                >
+                    Slot {slot}
+                </Typography>
+            }
+            sx={{ pb: 0 }}
+        />
+        <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+            <Box
+                sx={{
+                    aspectRatio: '1',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 1,
+                    bgcolor: 'action.hover',
+                }}
+            >
+                <Typography
+                    variant='body2'
+                    color='text.disabled'
+                >
+                    Empty
+                </Typography>
+            </Box>
+        </CardContent>
+    </Card>
+)
+
+// ── Puck card ─────────────────────────────────────────────────────────────────
+
 const MAX_PINS = 16
 
 export const DEFAULT_PUCK_SIZE = 13
@@ -38,20 +89,17 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size: sizeProp }) => {
     }
 
     const filledCount = puck.pins.filter((p) => p.sample).length
-    const totalPins = puck.pins.length
 
     return (
         <Card
-            elevation={3}
+            elevation={0}
             sx={{
-                borderRadius: 3,
+                borderRadius: 2,
                 border: '1px solid',
                 borderColor: 'divider',
                 display: 'flex',
                 flexDirection: 'column',
                 width: '100%',
-                transition: 'box-shadow 0.2s',
-                '&:hover': { boxShadow: 6 },
             }}
         >
             <CardHeader
@@ -67,7 +115,7 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size: sizeProp }) => {
                 subheader={undefined}
                 action={
                     <Chip
-                        label={`${filledCount}/${totalPins} pins`}
+                        label={`${filledCount}/${MAX_PINS}`}
                         size='small'
                         sx={{
                             bgcolor: filledCount > 0 ? green[100] : grey[200],
@@ -110,8 +158,7 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size: sizeProp }) => {
                     ))}
                 </Box>
 
-                {puck.pins.length > 0 && (
-                    <Box>
+                <Box>
                         <Divider sx={{ mb: 1 }} />
                         <Typography
                             variant='caption'
@@ -121,34 +168,37 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size: sizeProp }) => {
                             Samples
                         </Typography>
                         <Box sx={{ mt: 0.5 }}>
-                            {puck.pins.map((pin) => (
-                                <Box
-                                    key={pin.key}
-                                    sx={{
-                                        display: 'flex',
-                                        gap: 1,
-                                        alignItems: 'baseline',
-                                        borderRadius: 1,
-                                        px: 0.5,
-                                        py: 0.25,
-                                    }}
-                                >
-                                    <Chip
-                                        label={pin.positionInPuck}
-                                        size='small'
-                                        sx={{ height: 18, fontSize: '0.65rem', minWidth: 24 }}
-                                    />
-                                    <Typography
-                                        variant='caption'
-                                        noWrap
+                            {Array.from({ length: MAX_PINS }, (_, i) => i + 1).map((pos) => {
+                                const pin = pinByPosition[pos]
+                                return (
+                                    <Box
+                                        key={pos}
+                                        sx={{
+                                            display: 'flex',
+                                            gap: 1,
+                                            alignItems: 'baseline',
+                                            borderRadius: 1,
+                                            px: 0.5,
+                                            py: 0.25,
+                                            opacity: pin ? 1 : 0.35,
+                                        }}
                                     >
-                                        {pin.sample?.name ?? <em>empty</em>}
-                                    </Typography>
-                                </Box>
-                            ))}
+                                        <Chip
+                                            label={pos}
+                                            size='small'
+                                            sx={{ height: 18, fontSize: '0.65rem', width: 28, flexShrink: 0 }}
+                                        />
+                                        <Typography
+                                            variant='caption'
+                                            noWrap
+                                        >
+                                            {pin?.sample?.name ?? <em>empty</em>}
+                                        </Typography>
+                                    </Box>
+                                )
+                            })}
                         </Box>
                     </Box>
-                )}
             </CardContent>
         </Card>
     )

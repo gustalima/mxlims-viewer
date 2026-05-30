@@ -71,8 +71,8 @@ export const SummaryTable: FC<SummaryTableProps> = ({ shipments }) => {
             </Typography>
             <TableContainer
                 component={Paper}
-                elevation={2}
-                sx={{ borderRadius: 2 }}
+                elevation={0}
+                sx={{ borderRadius: 1, border: '1px solid', borderColor: 'divider' }}
             >
                 <Table
                     size='small'
