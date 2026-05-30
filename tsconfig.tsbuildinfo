@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/declarations.d.ts","./src/main.tsx","./src/components/FileUpload.tsx","./src/components/PinButton.tsx","./src/components/PuckCard.tsx","./src/components/ShipmentPanel.tsx","./src/components/SummaryTable.tsx","./src/types/mxlims.ts","./src/utils/mxlims-parser.ts","./src/utils/mxlims-validator.ts"],"version":"6.0.3"}
