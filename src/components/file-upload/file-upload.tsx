@@ -1,56 +1,34 @@
+import type { ValidationResult } from '@/types/mxlims'
+import { readJsonFile } from '@/utils/read-json-file'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 import { Alert, Box, Button, Paper, Typography } from '@mui/material'
-import React, { useCallback } from 'react'
-import type { ValidationResult } from '../types/mxlims'
+import { useRef, type FC } from 'react'
 
 interface FileUploadProps {
     onFile: (raw: unknown) => void
     validationResult: ValidationResult | null
 }
 
-export const FileUpload: React.FC<FileUploadProps> = ({ onFile, validationResult }) => {
-    const inputRef = React.useRef<HTMLInputElement>(null)
+export const FileUpload: FC<FileUploadProps> = ({ onFile, validationResult }) => {
+    const inputRef = useRef<HTMLInputElement>(null)
 
-    const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0]
-            if (!file) return
-            const reader = new FileReader()
-            reader.onload = (ev) => {
-                try {
-                    const parsed = JSON.parse(ev.target?.result as string)
-                    onFile(parsed)
-                } catch {
-                    onFile(null)
-                }
-            }
-            reader.readAsText(file)
-            // Reset input so the same file can be re-uploaded
-            e.target.value = ''
-        },
-        [onFile],
-    )
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+        const file = e.target.files?.[0]
+        if (!file) return
+        readJsonFile(file, onFile)
+        e.target.value = ''
+    }
 
-    const handleDrop = useCallback(
-        (e: React.DragEvent<HTMLDivElement>) => {
-            e.preventDefault()
-            const file = e.dataTransfer.files?.[0]
-            if (!file) return
-            const reader = new FileReader()
-            reader.onload = (ev) => {
-                try {
-                    const parsed = JSON.parse(ev.target?.result as string)
-                    onFile(parsed)
-                } catch {
-                    onFile(null)
-                }
-            }
-            reader.readAsText(file)
-        },
-        [onFile],
-    )
+    function handleDrop(e: React.DragEvent<HTMLDivElement>): void {
+        e.preventDefault()
+        const file = e.dataTransfer.files?.[0]
+        if (!file) return
+        readJsonFile(file, onFile)
+    }
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => e.preventDefault()
+    function handleDragOver(e: React.DragEvent<HTMLDivElement>): void {
+        e.preventDefault()
+    }
 
     return (
         <Box>
@@ -78,17 +56,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFile, validationResult
                     onChange={handleChange}
                 />
                 <UploadFileIcon sx={{ fontSize: 48, color: 'primary.main', mb: 1 }} />
-                <Typography
-                    variant='h6'
-                    gutterBottom
-                >
+                <Typography variant='h6' gutterBottom>
                     Drop an MXLIMS JSON file here
                 </Typography>
-                <Typography
-                    variant='body2'
-                    color='text.secondary'
-                    gutterBottom
-                >
+                <Typography variant='body2' color='text.secondary' gutterBottom>
                     or click to browse
                 </Typography>
                 <Button
@@ -105,22 +76,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFile, validationResult
             </Paper>
 
             {validationResult && !validationResult.valid && (
-                <Alert
-                    severity='error'
-                    sx={{ mt: 2 }}
-                >
-                    <Typography
-                        variant='subtitle2'
-                        sx={{ fontWeight: 700 }}
-                        gutterBottom
-                    >
+                <Alert severity='error' sx={{ mt: 2 }}>
+                    <Typography variant='subtitle2' sx={{ fontWeight: 700 }} gutterBottom>
                         Validation failed — {validationResult.errors.length} error
                         {validationResult.errors.length > 1 ? 's' : ''}
                     </Typography>
-                    <Box
-                        component='ul'
-                        sx={{ m: 0, pl: 2 }}
-                    >
+                    <Box component='ul' sx={{ m: 0, pl: 2 }}>
                         {validationResult.errors.slice(0, 20).map((err, i) => (
                             <li key={i}>
                                 <Typography variant='caption'>
@@ -130,10 +91,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFile, validationResult
                         ))}
                         {validationResult.errors.length > 20 && (
                             <li>
-                                <Typography
-                                    variant='caption'
-                                    color='text.secondary'
-                                >
+                                <Typography variant='caption' color='text.secondary'>
                                     … and {validationResult.errors.length - 20} more
                                 </Typography>
                             </li>
@@ -143,10 +101,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFile, validationResult
             )}
 
             {validationResult?.valid && (
-                <Alert
-                    severity='success'
-                    sx={{ mt: 2 }}
-                >
+                <Alert severity='success' sx={{ mt: 2 }}>
                     File validated successfully.
                 </Alert>
             )}
