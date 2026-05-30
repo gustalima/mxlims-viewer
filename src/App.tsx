@@ -10,11 +10,18 @@ export default function App() {
 
     return (
         <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
-            <AppBar position='sticky' elevation={2}>
+            <AppBar
+                position='sticky'
+                elevation={0}
+                sx={{ borderBottom: '1px solid', borderColor: 'primary.dark' }}
+            >
                 <Toolbar>
                     <ScienceIcon sx={{ mr: 1.5 }} />
-                    <Typography variant='h6' sx={{ fontWeight: 700, flex: 1 }}>
-                        MXLIMS Viewer
+                    <Typography
+                        variant='h6'
+                        sx={{ fontWeight: 700, flex: 1 }}
+                    >
+                        MXLIMS Unipuck Viewer
                     </Typography>
                     <Button
                         variant='outlined'
@@ -28,32 +35,47 @@ export default function App() {
                 </Toolbar>
             </AppBar>
 
-            <Container maxWidth={false} sx={{ py: 4, px: { xs: 2, sm: 3, md: 4 } }}>
+            <Container
+                maxWidth={false}
+                sx={{ py: 4, px: { xs: 2, sm: 3, md: 4 } }}
+            >
                 {shipments.length === 0 && (
                     <Box sx={{ mb: 4 }}>
-                        <FileUpload onFile={handleFile} validationResult={validationResult} />
+                        <FileUpload
+                            onFile={handleFile}
+                            validationResult={validationResult}
+                        />
                         <Divider sx={{ mt: 4 }} />
                     </Box>
                 )}
 
-                {shipments.length === 0 ? (
+                {shipments.length === 0 ?
                     <Box sx={{ textAlign: 'center', py: 8 }}>
                         <ScienceIcon sx={{ fontSize: 72, color: 'grey.400', mb: 2 }} />
-                        <Typography variant='h5' color='text.secondary'>
+                        <Typography
+                            variant='h5'
+                            color='text.secondary'
+                        >
                             No data loaded
                         </Typography>
-                        <Typography variant='body2' color='text.secondary' sx={{ mt: 1 }}>
+                        <Typography
+                            variant='body2'
+                            color='text.secondary'
+                            sx={{ mt: 1 }}
+                        >
                             Upload an MXLIMS JSON file to get started.
                         </Typography>
                     </Box>
-                ) : (
-                    <>
+                :   <>
                         {shipments.map((shipment) => (
-                            <ShipmentPanel key={shipment.key} shipment={shipment} />
+                            <ShipmentPanel
+                                key={shipment.key}
+                                shipment={shipment}
+                            />
                         ))}
                         <SummaryTable shipments={shipments} />
                     </>
-                )}
+                }
             </Container>
         </Box>
     )

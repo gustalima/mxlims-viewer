@@ -39,7 +39,7 @@ export const FileUpload: FC<FileUploadProps> = ({ onFile, validationResult }) =>
                 sx={{
                     border: '2px dashed',
                     borderColor: 'primary.main',
-                    borderRadius: 3,
+                    borderRadius: 2,
                     p: 4,
                     textAlign: 'center',
                     cursor: 'pointer',

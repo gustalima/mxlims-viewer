@@ -1,17 +1,26 @@
 import type { ResolvedPuck } from '@/types/mxlims'
 import { Grid } from '@mui/material'
 import type { FC } from 'react'
-import { PuckCard } from './puck-card'
+import { PuckCard, PuckPlaceholder } from './puck-card'
 
 interface PuckGridProps {
-    pucks: ResolvedPuck[]
+    pucks: (ResolvedPuck | null)[]
 }
 
 export const PuckGrid: FC<PuckGridProps> = ({ pucks }) => (
-    <Grid container spacing={2}>
-        {pucks.map((puck) => (
-            <Grid key={puck.key} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                <PuckCard puck={puck} />
+    <Grid
+        container
+        spacing={2}
+        columns={{ xs: 2, sm: 4, md: 7 }}
+    >
+        {pucks.map((puck, i) => (
+            <Grid
+                key={puck?.key ?? `empty-${i}`}
+                size={1}
+            >
+                {puck ?
+                    <PuckCard puck={puck} />
+                :   <PuckPlaceholder slot={i + 1} />}
             </Grid>
         ))}
     </Grid>

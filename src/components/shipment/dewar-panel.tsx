@@ -1,5 +1,5 @@
 import { PuckGrid } from '@/components/puck/puck-grid'
-import type { ResolvedDewar } from '@/types/mxlims'
+import type { ResolvedDewar, ResolvedPuck } from '@/types/mxlims'
 import AcUnitIcon from '@mui/icons-material/AcUnit'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ScienceIcon from '@mui/icons-material/Science'
@@ -23,21 +23,40 @@ interface DewarPanelProps {
     defaultExpanded?: boolean
 }
 
+const DEWAR_CAPACITY = 7
+
+function buildPuckSlots(dewar: ResolvedDewar): (ResolvedPuck | null)[] {
+    const slots: (ResolvedPuck | null)[] = Array(DEWAR_CAPACITY).fill(null)
+    const positioned = dewar.pucks.filter((p) => p.positionInDewar != null)
+    const unpositioned = dewar.pucks.filter((p) => p.positionInDewar == null)
+    for (const p of positioned) {
+        const idx = (p.positionInDewar ?? 1) - 1
+        if (idx >= 0 && idx < DEWAR_CAPACITY) slots[idx] = p
+    }
+    let fill = 0
+    for (const p of unpositioned) {
+        while (fill < DEWAR_CAPACITY && slots[fill] !== null) fill++
+        if (fill < DEWAR_CAPACITY) slots[fill++] = p
+    }
+    return slots
+}
+
 export const DewarPanel: FC<DewarPanelProps> = ({ dewar, defaultExpanded }) => {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     const totalPins = dewar.pucks.reduce((acc, p) => acc + p.pins.length, 0)
     const filledPins = dewar.pucks.reduce((acc, p) => acc + p.pins.filter((pin) => pin.sample).length, 0)
+    const puckSlots = buildPuckSlots(dewar)
 
     return (
         <Accordion
             defaultExpanded={defaultExpanded}
-            elevation={2}
-            sx={{ borderRadius: '12px !important', mb: 1, '&:before': { display: 'none' } }}
+            elevation={0}
+            sx={{ borderRadius: '8px !important', mb: 1, '&:before': { display: 'none' }, border: '1px solid', borderColor: 'divider' }}
         >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                sx={{ borderRadius: 3 }}
+                sx={{ borderRadius: 2 }}
             >
                 <Stack
                     direction='row'
@@ -90,15 +109,7 @@ export const DewarPanel: FC<DewarPanelProps> = ({ dewar, defaultExpanded }) => {
                 </Stack>
             </AccordionSummary>
             <AccordionDetails sx={{ pt: 0 }}>
-                {dewar.pucks.length === 0 ?
-                    <Typography
-                        variant='body2'
-                        color='text.secondary'
-                        sx={{ py: 2, textAlign: 'center' }}
-                    >
-                        No pucks in this dewar.
-                    </Typography>
-                :   <PuckGrid pucks={dewar.pucks} />}
+                <PuckGrid pucks={puckSlots} />
             </AccordionDetails>
         </Accordion>
     )

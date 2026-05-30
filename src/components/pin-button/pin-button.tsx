@@ -29,7 +29,7 @@ export const PinButton: FC<PinButtonProps> = ({ position, pin, size }) => {
                         bgcolor: '#f8f9fa',
                         color: 'rgba(0,0,0,0.87)',
                         border: '1px solid #dadde9',
-                        boxShadow: 1,
+                        boxShadow: 0,
                     },
                 },
                 arrow: { sx: { color: '#dadde9' } },
