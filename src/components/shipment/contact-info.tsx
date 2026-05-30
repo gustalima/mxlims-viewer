@@ -17,19 +17,28 @@ export const ContactInfo: FC<ContactInfoProps> = ({ label, person }) => (
         </Typography>
         {person.name && <Typography variant='body2'>{person.name}</Typography>}
         {person.institution && (
-            <Typography variant='body2' color='text.secondary'>
+            <Typography
+                variant='body2'
+                color='text.secondary'
+            >
                 {person.institution}
             </Typography>
         )}
         {person.emailAddress && (
             <Typography variant='body2'>
-                <Link href={`mailto:${person.emailAddress}`} underline='hover'>
+                <Link
+                    href={`mailto:${person.emailAddress}`}
+                    underline='hover'
+                >
                     {person.emailAddress}
                 </Link>
             </Typography>
         )}
         {person.phone && (
-            <Typography variant='body2' color='text.secondary'>
+            <Typography
+                variant='body2'
+                color='text.secondary'
+            >
                 {person.phone}
             </Typography>
         )}
