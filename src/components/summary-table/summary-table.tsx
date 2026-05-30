@@ -10,6 +10,8 @@ import {
     TableHead,
     TableRow,
     Typography,
+    useMediaQuery,
+    useTheme,
 } from '@mui/material'
 import type { FC } from 'react'
 
@@ -52,9 +54,11 @@ function buildRows(shipments: ResolvedShipment[]): SummaryRow[] {
 }
 
 export const SummaryTable: FC<SummaryTableProps> = ({ shipments }) => {
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     const rows = buildRows(shipments)
 
-    if (rows.length === 0) return null
+    if (rows.length === 0 || isMobile) return null
 
     return (
         <Box sx={{ mt: 6 }}>

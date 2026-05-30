@@ -3,7 +3,18 @@ import type { ResolvedDewar } from '@/types/mxlims'
 import AcUnitIcon from '@mui/icons-material/AcUnit'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ScienceIcon from '@mui/icons-material/Science'
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Chip, Stack, Typography } from '@mui/material'
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Avatar,
+    Box,
+    Chip,
+    Stack,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from '@mui/material'
 import { cyan, teal } from '@mui/material/colors'
 import type { FC } from 'react'
 
@@ -13,6 +24,8 @@ interface DewarPanelProps {
 }
 
 export const DewarPanel: FC<DewarPanelProps> = ({ dewar, defaultExpanded }) => {
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     const totalPins = dewar.pucks.reduce((acc, p) => acc + p.pins.length, 0)
     const filledPins = dewar.pucks.reduce((acc, p) => acc + p.pins.filter((pin) => pin.sample).length, 0)
 
@@ -34,38 +47,45 @@ export const DewarPanel: FC<DewarPanelProps> = ({ dewar, defaultExpanded }) => {
                     <Avatar sx={{ bgcolor: cyan[700], width: 36, height: 36 }}>
                         <AcUnitIcon fontSize='small' />
                     </Avatar>
-                    <Box sx={{ flex: 1 }}>
-                        <Typography
-                            variant='subtitle1'
-                            sx={{ fontWeight: 700 }}
-                        >
-                            {dewar.name ?? dewar.key}
-                        </Typography>
-                        {dewar.barcode && (
-                            <Typography
-                                variant='caption'
-                                color='text.secondary'
-                            >
-                                {dewar.barcode}
-                            </Typography>
-                        )}
-                    </Box>
                     <Stack
-                        direction='row'
-                        spacing={1}
+                        direction='column'
+                        spacing={isMobile ? 0.5 : 0}
+                        sx={{ flex: 1, minWidth: 0 }}
                     >
-                        <Chip
-                            icon={<ScienceIcon sx={{ fontSize: '0.85rem !important' }} />}
-                            label={`${dewar.pucks.length} puck${dewar.pucks.length !== 1 ? 's' : ''}`}
-                            size='small'
-                            sx={{ bgcolor: teal[50], color: teal[800] }}
-                        />
-                        <Chip
-                            label={`${filledPins}/${totalPins} samples`}
-                            size='small'
-                            color='primary'
-                            variant='outlined'
-                        />
+                        <Box>
+                            <Typography
+                                variant='subtitle1'
+                                sx={{ fontWeight: 700 }}
+                            >
+                                {dewar.name ?? dewar.key}
+                            </Typography>
+                            {dewar.barcode && (
+                                <Typography
+                                    variant='caption'
+                                    color='text.secondary'
+                                >
+                                    {dewar.barcode}
+                                </Typography>
+                            )}
+                        </Box>
+                        <Stack
+                            direction='row'
+                            spacing={1}
+                            sx={{ flexWrap: 'wrap' }}
+                        >
+                            <Chip
+                                icon={<ScienceIcon sx={{ fontSize: '0.85rem !important' }} />}
+                                label={`${dewar.pucks.length} puck${dewar.pucks.length !== 1 ? 's' : ''}`}
+                                size='small'
+                                sx={{ bgcolor: teal[50], color: teal[800] }}
+                            />
+                            <Chip
+                                label={`${filledPins}/${totalPins} samples`}
+                                size='small'
+                                color='primary'
+                                variant='outlined'
+                            />
+                        </Stack>
                     </Stack>
                 </Stack>
             </AccordionSummary>

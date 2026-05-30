@@ -2,20 +2,34 @@ import { PinButton } from '@/components/pin-button/pin-button'
 import type { ResolvedPin, ResolvedPuck } from '@/types/mxlims'
 import { Box, Card, CardContent, CardHeader, Chip, Divider, Typography } from '@mui/material'
 import { green, grey } from '@mui/material/colors'
-import type { FC } from 'react'
+import { useEffect, useRef, useState, type FC } from 'react'
 
 const MAX_PINS = 16
 
-/** Default puck size in rem — matches crystal-registration non-HDPI (10 * scaleSize=1.6) */
 export const DEFAULT_PUCK_SIZE = 13
 
 interface PuckCardProps {
     puck: ResolvedPuck
-    /** Puck container size in rem (default: DEFAULT_PUCK_SIZE) */
+    /** Override the auto-measured size in rem (optional). */
     size?: number
 }
 
-export const PuckCard: FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) => {
+export const PuckCard: FC<PuckCardProps> = ({ puck, size: sizeProp }) => {
+    const puckBoxRef = useRef<HTMLDivElement>(null)
+    const [measuredSize, setMeasuredSize] = useState<number>(DEFAULT_PUCK_SIZE)
+
+    useEffect(() => {
+        const el = puckBoxRef.current
+        if (!el) return
+        const ro = new ResizeObserver(([entry]) => {
+            const rootFontPx = parseFloat(getComputedStyle(document.documentElement).fontSize)
+            setMeasuredSize(entry.contentRect.width / rootFontPx)
+        })
+        ro.observe(el)
+        return () => ro.disconnect()
+    }, [])
+
+    const resolvedSize = sizeProp ?? measuredSize
     const pinByPosition: Record<number, ResolvedPin> = {}
     for (const pin of puck.pins) {
         if (pin.positionInPuck != null) {
@@ -33,8 +47,9 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) 
                 borderRadius: 3,
                 border: '1px solid',
                 borderColor: 'divider',
-                display: 'inline-flex',
+                display: 'flex',
                 flexDirection: 'column',
+                width: '100%',
                 transition: 'box-shadow 0.2s',
                 '&:hover': { boxShadow: 6 },
             }}
@@ -75,10 +90,11 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) 
                 }}
             >
                 <Box
+                    ref={puckBoxRef}
                     sx={{
                         position: 'relative',
-                        width: `${size}rem`,
-                        height: `${size}rem`,
+                        width: '100%',
+                        aspectRatio: '1',
                         backgroundImage: 'url(/unipuck.webp)',
                         backgroundSize: 'contain',
                         backgroundRepeat: 'no-repeat',
@@ -88,7 +104,7 @@ export const PuckCard: FC<PuckCardProps> = ({ puck, size = DEFAULT_PUCK_SIZE }) 
                         <PinButton
                             key={pos}
                             position={pos}
-                            size={size}
+                            size={resolvedSize}
                             pin={pinByPosition[pos]}
                         />
                     ))}
