@@ -1,4 +1,5 @@
 import { FileUpload } from '@/components/file-upload/file-upload'
+import { UnipuckIcon } from '@/components/puck/puck-icon'
 import { ShipmentPanel } from '@/components/shipment/shipment-panel'
 import { SummaryTable } from '@/components/summary-table/summary-table'
 import { useMxlimsFile } from '@/hooks/use-mxlims-file'
@@ -6,7 +7,7 @@ import { readJsonFile } from '@/utils/read-json-file'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import { AppBar, Box, Button, Container, IconButton, Toolbar, Typography } from '@mui/material'
 import { useState } from 'react'
-import { UnipuckIcon } from './components/puck/puck-icon'
+import './firebase'
 
 export default function App() {
     const { shipments, validationResult, handleFile, handleClear } = useMxlimsFile()
