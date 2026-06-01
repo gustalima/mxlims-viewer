@@ -17,7 +17,7 @@ bun.lockb
 # Firebase
 .firebase/
 .firebaserc.local
-.firebase.config.ts
+
 
 # Editor
 .vscode/
