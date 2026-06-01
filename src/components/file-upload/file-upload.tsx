@@ -40,11 +40,16 @@ export const FileUpload: FC<FileUploadProps> = ({ onFile, validationResult }) =>
                     border: '2px dashed',
                     borderColor: 'primary.main',
                     borderRadius: 2,
-                    p: 4,
                     textAlign: 'center',
                     cursor: 'pointer',
                     transition: 'background 0.2s',
                     '&:hover': { background: 'action.hover' },
+                    height: 'calc(100vh - 130px)',
+                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    flex: 1,
                 }}
                 onClick={() => inputRef.current?.click()}
             >
