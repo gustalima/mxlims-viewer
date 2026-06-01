@@ -23,6 +23,7 @@ export const PinButton: FC<PinButtonProps> = ({ position, pin, size }) => {
             title={pin ? <SampleTooltip pin={pin} /> : `Position ${position} — empty`}
             placement='top'
             arrow
+            enterDelay={300}
             slotProps={{
                 tooltip: {
                     sx: {
