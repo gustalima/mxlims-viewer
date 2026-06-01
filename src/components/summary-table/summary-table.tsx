@@ -61,7 +61,7 @@ export const SummaryTable: FC<SummaryTableProps> = ({ shipments }) => {
     if (rows.length === 0 || isMobile) return null
 
     return (
-        <Box sx={{ mt: 6 }}>
+        <Box sx={{ mt: 6, mb: 2 }}>
             <Divider sx={{ mb: 3 }} />
             <Typography
                 variant='h5'
